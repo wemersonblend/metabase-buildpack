@@ -1,11 +1,11 @@
-# NOTE: the Heroku Buildpack release artifact will no longer be maintained by Metabase, as we strongly encourage everyone to either deploy in Heroku via containers or fork this repository. Please see announcement https://www.metabase.com/releases/Metabase-0.51
-
-Heroku Buildpack for Metabase
+Heroku Buildpack for [Metabase 55.1](https://downloads.metabase.com/v0.55.1.x/metabase.jar)
 
 Add the following to your app.json:
 
+```JSON
 "buildpacks": [
   {
-    "url": "https://github.com/metabase/metabase-buildpack"
+    "url": "https://github.com/wemersonblend/metabase-buildpack"
   }
 ]
+```
