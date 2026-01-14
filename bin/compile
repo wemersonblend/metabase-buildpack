@@ -3,11 +3,23 @@
 set -eu
 
 METABASE_VERSION=`cat ./bin/version`
+JAVA_VERSION=${JAVA_VERSION:-18}
 METABASE_DIR="$1/target/uberjar"
 METABASE_JAR="$METABASE_DIR/metabase.jar"
 METABASE_URL="https://downloads.metabase.com/v$METABASE_VERSION/metabase.jar"
+JDK_DIR="$1/.jdk"
+PROFILE_DIR="$1/.profile.d"
+JDK_URL="https://api.adoptium.net/v3/binary/latest/${JAVA_VERSION}/ga/linux/x64/jre/hotspot/normal/eclipse"
 
 mkdir -p $METABASE_DIR
+
+echo "-----> Installing Temurin JRE $JAVA_VERSION..."
+mkdir -p "$JDK_DIR" "$PROFILE_DIR"
+curl -s --retry 3 -L "$JDK_URL" | tar -xz -C "$JDK_DIR" --strip-components=1
+cat > "$PROFILE_DIR/jdk.sh" <<'EOF'
+export JAVA_HOME="$HOME/.jdk"
+export PATH="$JAVA_HOME/bin:$PATH"
+EOF
 
 echo -n "-----> Downloading Metabase... from $METABASE_URL to $METABASE_JAR"
 curl -s --retry 3 -o $METABASE_JAR -L $METABASE_URL
